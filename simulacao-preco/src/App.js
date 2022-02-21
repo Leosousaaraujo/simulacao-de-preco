@@ -1,18 +1,12 @@
 import React, { useState } from "react";
+import { createGlobalStyle } from "styled-components";
 import Visitas from "./components/visitas";
 import Domain from "./components/dominios";
-import {Title, Wrapper, Cards} from "./styles.js"
+import Total from "./components/total";
+import {Container, Title, Wrapper, Cards} from "./styles.js"
+import { createMuiTheme, ThemeProvider } from '@material-ui/core'
 
-const Total = ({ totalVisitas, totalDominios, numeroDominios, numeroVisitas}) => (
-  <div>
-    <div>
-      <Title color="blue">Valor Total</Title>
 
-    </div>
-    <div>{`R$ ${totalVisitas + totalDominios},00 /mês`}</div>
-    <h5>{numeroVisitas} Visitas e {numeroDominios} Domínios</h5>
-  </div>
-);
 
 export default function App() {
   const [totalVisita, setTotalVisita] = useState(0);
@@ -20,30 +14,57 @@ export default function App() {
   const [numeroDominios, setNumeroDominios] = useState(3);
   const [numeroVisitas, setNumeroVisitas] = useState(100000);
 
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: '#2DE16B',
+      }
+    }
+  });
+
   return (
+
     <div className="App">
-      <Wrapper>
-        <Title>Faça sua Simulação</Title>
-        <Cards className="container-simulacao">
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+          <Container>
+            <Wrapper>
+              <Title>Faça sua Simulação</Title>
+              <Cards className="container-simulacao">
 
-          <Visitas
-            className="visitas"
-            handleTotal={(value) => setTotalVisita(value)}
-            handleNumeroVisitas={(value) => setNumeroVisitas(value)}
-          />
-          <Domain 
-            handleTotal={(value) => setTotalDominio(value)} 
-            handleDominios={(value) => setNumeroDominios(value)} 
-          />
-          <Total 
-            totalVisitas={totalVisita} 
-            totalDominios={totalDominio} 
-            numeroDominios={numeroDominios} 
-            numeroVisitas={numeroVisitas} 
-          />
+                <Visitas
+                  className="visitas"
+                  handleTotal={(value) => setTotalVisita(value)}
+                  handleNumeroVisitas={(value) => setNumeroVisitas(value)}
+                />
+                <Domain 
+                  handleTotal={(value) => setTotalDominio(value)} 
+                  handleDominios={(value) => setNumeroDominios(value)} 
+                />
+                <Total 
+                  totalVisitas={totalVisita} 
+                  totalDominios={totalDominio} 
+                  numeroDominios={numeroDominios} 
+                  numeroVisitas={numeroVisitas}
+                />
 
-        </Cards>
-      </Wrapper>
+              </Cards>
+            </Wrapper>
+          </Container>
+      </ThemeProvider>
     </div>
   );
 }
+
+const GlobalStyle = createGlobalStyle`
+  *{
+    margin: 0 auto;
+    padding: 0;
+    font-family: Fira Sans, sans-serif;
+  }
+
+  body{
+    background: #F8F8F8;
+  }
+`
+
